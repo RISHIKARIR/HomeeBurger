@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from "react";
 import apiFetch from "../../api/apifetch";
-import { Video, Search, Eye, ThumbsUp, Clock3 } from "lucide-react";
+import {
+  Video,
+  Search,
+  Eye,
+  ThumbsUp,
+  Clock3,
+  ArrowUpDown,
+} from "lucide-react";
+import VideoCard from "../../component/your-Videos/videoCard";
+import useVideos from "../../hooks/useVideos";
+
+
+
 
 function YourVideos() {
   const [videos, setVideos] = useState({});
+  const { data,isLoading,error } = useVideos();
+    const videosData = data?.data;
+
+  console.log(data,"data dikhaio zra")
 
   useEffect(() => {
     async function showVideos() {
       // const response = await apiFetch("api/videos/get-videos","get")
-
-      console.log(response, "responseeeee");
-
-      setVideos(response);
+      // console.log(response, "responseeeee");
+      // setVideos(response);
     }
 
     showVideos();
@@ -72,7 +86,16 @@ function YourVideos() {
         </div>
       </div>
 
-      <div className="relative flex gap-5">
+
+
+      
+
+      <div className="relative flex gap-5 justify-between">
+
+
+
+      <div className="flex gap-5">
+
         <Search className="absolute opacity-50 top-2.5 left-2" size={20} />
         <input
           placeholder="Search your videos..."
@@ -87,8 +110,6 @@ function YourVideos() {
           <option value="dessert">Dessert</option>
         </select>
 
-
-
         <select className="bg-[#1E1916] border border-[#2A2420] text-[#8A8175] rounded-2xl p-2 text-center  pl-3 pr-7">
           <option value={""}>All status</option>
           <option value="Pending">Pending</option>
@@ -97,10 +118,59 @@ function YourVideos() {
         </select>
 
 
+      </div>
+
+
+
+        <div className="relative">
+          <ArrowUpDown
+            size={15}
+            className="absolute left-3 top-1/2 text-[#8A8175] -translate-y-1/2"
+          />
+
+          <select className="bg-[#1E1916] border border-[#2A2420] text-[#8A8175] rounded-2xl p-2 text-center  pl-3 ">
+            <option value={""}> Sort : Newest</option>
+            <option value="Pending">Sort : Oldest</option>
+            <option value="progress">Sort : Most Viewed</option>
+            <option value="Uploaded">Sort : Least Viewed</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="flex justify-between px-30 pb-5 border-b-3 border-[#1E1D1B] mt-7">
+
+    <div>
+    <span className="text-[#8A8175] text-xs font-bold">TITLE</span>
+      </div>
+
+
+
+      <div className="flex gap-15 text-[#8A8175] text-xs font-bold">
+      <span>VIEWS</span>
+      <span>DATE</span>
+      <span>STATUS</span>
+      <span>ACTIONS</span>
+      </div>
 
 
 
       </div>
+
+    <div>
+    {
+      videosData?.map((item)=>{
+
+        return <VideoCard data={item}/>
+
+      })
+      
+   
+    }
+  
+
+    </div>
+
+
 
       {videos.data?.data?.map((item, idx) => {
         return (
